@@ -282,7 +282,7 @@ unsafe_allow_html=True
 
 text = st.text_area(
 "",
-"Apple was founded by Steve Jobs. NLP is a branch of AI.",
+"Red Bull gives you wings",
 height=180
 )
 
