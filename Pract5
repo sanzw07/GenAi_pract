@@ -1,0 +1,30 @@
+import numpy as np
+print("---Simple Attention Mechanism Explanation--")
+encoder_outputs = np.array([
+    [0.1,0.2],
+    [0.5,0.3],
+    [0.2,0.8],
+    [0.9,0.1]
+])
+print(f"\nEncoder Output (4 words, 2 features each): \n{encoder_outputs}")
+decoder_hidden_state = np.array([0.7,0.4])
+print(f"\nDecoder Hidden State (what we are looking for): {decoder_hidden_state}")
+alignment_scores = np.dot(encoder_outputs, decoder_hidden_state)
+print(f"\nAlignment Scores (similarity of each encoder to decoder state): {alignment_scores}")
+def softmax(x):
+  e_x = np.exp(x - np.max(x))
+  return e_x / e_x.sum(axis=0)
+attention_weights = softmax(alignment_scores)
+print(f"\nAttention Weights (how much to 'pay attention' to each word): {attention_weights}")
+print(f"(Notice that the word with index 3 got a higher weight, meaning it's more relevant to 'learning').")
+# This is what the decoder actually uses, focusing on the most relevant parts
+context_vector = np.sum(encoder_outputs * attention_weights[:, np.newaxis], axis=0)
+print(f"\nContext Vector (weighted sum of encoder outputs, 'paying attention'): {context_vector}")
+
+print("\n--- How it works ---")
+print("The decoder, when generating its next output, looks at its current 'state' (what it's trying to say).")
+print("It then compares this state to *all* the words from the input sentence (encoder outputs).")
+print("It assigns 'attention weights' - a score indicating how important each input word is for its current task.")
+print("Finally, it creates a 'context vector' by taking a weighted average of the input words, using these attention weights.")
+print("This context vector tells the decoder *what to focus on* from the input to make its next decision.")
+print("In this simple example, the decoder, looking for something 'related to learning', paid more attention to the relevant input.")
